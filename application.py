@@ -2,9 +2,8 @@
 from flask import Flask
 from flaskrun import flaskrun
 import time
-import oauthlib
-import oauthlib.oauth1
 from oauthlib import oauth1
+import oauthlib
 import requests
 
 
