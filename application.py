@@ -16,7 +16,7 @@ def get():
     MerchantId = "bd5c1517-8d80-48d7-8e8e-365433ad124f"
     public_key = "VFHRRIQQ"
     secret_key = "QQ8ZDIEHHIX5WPYKGXIY5YSF"
-    TestEnv = "http://www.testln.martjack.com/devapi"
+    TestEnv = "http://www.testln.martjack.com/devapi/"
     Staging = "http://www.stageln.martjack.com/devapi"
     ProdEnv = "http://www.martjack.com/devapi"
 
