@@ -126,10 +126,10 @@ def get():
                 Indata= {'MerchantId' : MerchantId, 'InputFormat' : 'application/json', 'InputData' : payload }
                 d = urlencode(Indata)
                 return d
-            response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'}, data=payload())
-            taskidfetch = response.json()
-            TaskId = taskidfetch['Taskid']
-            return TaskId
+        response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'}, data=payload())
+        taskidfetch = response.json()
+        TaskId = taskidfetch['Taskid']
+        return TaskId
         
             
     def PricelistTaskStatus():
