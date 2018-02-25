@@ -100,12 +100,12 @@ def get():
         if (r['Product']['IsParentProduct']) == True:
             url9 = EnvUrl + 'Product/Varients/' + MerchantId +'/' + pid + '/ALL'
             u = GET_signatureBuilder(public_key,secret_key,url9)
-             response3 = requests.get(u,headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'} )
-             variantskufetch = response3.json()
-             variantsku = variantskufetch['ProductVarient'][0]['SKU'] 
-        return variantsku
-    elif (r['Product']['IsParentProduct']) == False:
-        return sku
+            response3 = requests.get(u,headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'} )
+            variantskufetch = response3.json()
+            variantsku = variantskufetch['ProductVarient'][0]['SKU'] 
+            return variantsku
+        elif (r['Product']['IsParentProduct']) == False:
+            return sku
         
     def PricelistAPI():
         p,l = Getpricelists()
