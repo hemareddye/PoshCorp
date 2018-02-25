@@ -4,7 +4,7 @@ from flaskrun import flaskrun
 import time
 from oauthlib import oauth1
 import requests
-from urllib3.parse import urlencode
+from urllib.parse import urlencode
 import oauthlib.oauth1
 
 
