@@ -126,10 +126,15 @@ def get():
                 Indata= {'MerchantId' : MerchantId, 'InputFormat' : 'application/json', 'InputData' : payload }
                 d = urlencode(Indata)
                 return d
+            response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'}, data=payload())
+            taskidfetch = response.json()
+            TaskId = taskidfetch['Taskid']
+            return TaskId
+        
             
     def PricelistTaskStatus():
         TaskId = PricelistAPI()
-        url10 = EnvUrl + 'Product/MSMQTaskDetails/'  + MerchantId +'/' + TaskId + '/Product'
+        url10 = EnvUrl + 'Product/MSMQTaskDetails/'  + MerchantId +'/' + (TaskId) + '/Product'
         u = GET_signatureBuilder(public_key,secret_key,url10)
         response = requests.get(u,headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'} )
         r  = PricelistTaskStatus()
