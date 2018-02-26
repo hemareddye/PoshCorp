@@ -111,6 +111,8 @@ def get():
             return variantsku
         elif (r['Product']['IsParentProduct']) == False:
             return sku
+    
+    sku = variantproducts()
         
     def PricelistAPI():
         p,l = Getpricelists()
