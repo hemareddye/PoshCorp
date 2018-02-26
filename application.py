@@ -6,6 +6,8 @@ from oauthlib import oauth1
 import requests
 from urllib.parse import urlencode
 import oauthlib.oauth1
+import re
+import random
 
 
 application = Flask(__name__)
@@ -13,6 +15,7 @@ application = Flask(__name__)
 
 @application.route('/', methods=['GET'])
 def get():
+    
     MerchantId = "f48fdd16-92db-4188-854d-1ecd9b62d066"
     public_key = "K5DYSCRC"
     secret_key = "WHPT74UEQUYRZ33GUSBI7MGU"
@@ -25,6 +28,10 @@ def get():
     user = "sandieps"
     password = "Sandie0713"
     database = "PoshCorp"
+
+    mrp = random.randint(2000,5000)
+    webprice = random.randint(1000,4000)
+    tokenprice = random.randint(500,1000)
 
     def timestamp():
         t = time.time()
@@ -117,12 +124,12 @@ def get():
         webprice = "3990"
         def payload():
             if variantproducts() == sku:
-                payload = {"pricelistitems": {"pricelistitem": {"sku": sku,"variantsku":"" ,"qty": "1","mrp": mrp,"webprice": webprice,"tokenprice": "12"}}}
+                payload = {"pricelistitems": {"pricelistitem": {"sku": sku,"variantsku":"" ,"qty": "1","mrp": mrp,"webprice": webprice,"tokenprice": tokenprice}}}
                 Indata= {'MerchantId' : MerchantId, 'InputFormat' : 'application/json', 'InputData' : payload }
                 d = urlencode(Indata)
                 return d
             elif variantproducts() == variantsku:
-                payload = {"pricelistitems": {"pricelistitem": {"sku": sku,"variantsku":variantsku ,"qty": "1","mrp": mrp,"webprice": webprice,"tokenprice": "12"}}}
+                payload = {"pricelistitems": {"pricelistitem": {"sku": sku,"variantsku":variantsku ,"qty": "1","mrp": mrp,"webprice": webprice,"tokenprice": tokenprice}}}
                 Indata= {'MerchantId' : MerchantId, 'InputFormat' : 'application/json', 'InputData' : payload }
                 d = urlencode(Indata)
                 return d
@@ -140,7 +147,35 @@ def get():
         r  = PricelistTaskStatus()
         TaskStatus = r['TaskMsmqDetails']['TaskStatus']
         return response.json()
-    return PricelistTaskStatus()
+
+    def LocationInfo():
+        locationId = l
+        url11 = EnvUrl + 'Location/Information/'+ MerchantId + '/'+str(locationId)
+        u = GET_signatureBuilder(public_key,secret_key, url11)
+        response = requests.get(u, headers = {'accept':'application/json', 'Content-Type':'application/json'})
+        e = response.json()
+        Locationrefcode = (e['Location']['LocationCode'])
+        return Locationrefcode
+
+    def GetPrice():
+        r  = PricelistTaskStatus()
+        time.sleep(60)
+        url4 = EnvUrl + 'Product/Price/' + MerchantId
+        u = POST_signatureBuilder(public_key,secret_key,url4)
+        variantsku = sku
+        f= json.dumps({"sku":variantsku, "locationrefcode": LocationInfo()})
+        response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/json'}, data=f )
+        return response.json()
+    
+    g = GetPrice()
+    mrp_posted = (g['CurrentPrice'][0]['mrp'])
+    webprice_posted = (g['CurrentPrice'][0]['webprice'])
+    if mrp != mrp_posted and webprice != webprice_posted:
+    return "DCN is not active"
+    elif mrp == mrp_posted and webprice == webprice_posted:
+    print "DCN is active"
+
+    
 
 @application.route('/', methods=['POST'])
 def post():
