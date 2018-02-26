@@ -9,9 +9,7 @@ import oauthlib.oauth1
 import re
 import random
 
-
 application = Flask(__name__)
-
 
 @application.route('/', methods=['GET'])
 def get():
@@ -171,9 +169,9 @@ def get():
     mrp_posted = (g['CurrentPrice'][0]['mrp'])
     webprice_posted = (g['CurrentPrice'][0]['webprice'])
     if mrp != mrp_posted and webprice != webprice_posted:
-    return "DCN is not active"
+        return "DCN is not active"
     elif mrp == mrp_posted and webprice == webprice_posted:
-    print "DCN is active"
+        return "DCN is active"
 
     
 
