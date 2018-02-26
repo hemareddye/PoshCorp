@@ -140,7 +140,7 @@ def get():
         r  = PricelistTaskStatus()
         TaskStatus = r['TaskMsmqDetails']['TaskStatus']
         return response.json()
-    return PricelistAPI()
+    return PricelistTaskStatus()
 
 @application.route('/', methods=['POST'])
 def post():
