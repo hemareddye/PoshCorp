@@ -142,7 +142,7 @@ def get():
         url10 = EnvUrl + 'Product/MSMQTaskDetails/'  + MerchantId +'/' + Taskid + '/Product'
         u = GET_signatureBuilder(public_key,secret_key,url10)
         response = requests.get(u,headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'} )
-        r  = PricelistTaskStatus()
+        r  = response.json()
         TaskStatus = r['TaskMsmqDetails']['TaskStatus']
         return response.json()
 
@@ -173,7 +173,6 @@ def get():
     elif mrp == mrp_posted and webprice == webprice_posted:
         return "DCN is active"
 
-    
 
 @application.route('/', methods=['POST'])
 def post():
