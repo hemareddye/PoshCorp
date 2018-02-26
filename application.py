@@ -133,14 +133,14 @@ def get():
         
             
     def PricelistTaskStatus():
-        TaskId = PricelistAPI()
-        url10 = EnvUrl + 'Product/MSMQTaskDetails/'  + MerchantId +'/' + TaskId + '/Product'
+        Taskid = PricelistAPI()
+        url10 = EnvUrl + 'Product/MSMQTaskDetails/'  + MerchantId +'/' + Taskid + '/Product'
         u = GET_signatureBuilder(public_key,secret_key,url10)
         response = requests.get(u,headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'} )
         r  = PricelistTaskStatus()
         TaskStatus = r['TaskMsmqDetails']['TaskStatus']
         return response.json()
-    return PricelistAPI(), PricelistTaskStatus()
+    return PricelistAPI()
 
 @application.route('/', methods=['POST'])
 def post():
