@@ -161,7 +161,7 @@ def get():
 
     def GetPrice():
         r  = PricelistTaskStatus()
-        time.sleep(60)
+        time.sleep(100)
         url4 = EnvUrl + 'Product/Price/' + MerchantId
         u = POST_signatureBuilder(public_key,secret_key,url4)
         variantsku = sku
