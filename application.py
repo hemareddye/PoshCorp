@@ -161,7 +161,7 @@ def get():
 
     def GetPrice():
         r  = PricelistTaskStatus()
-        time.sleep(100)
+        time.sleep(60)
         url4 = EnvUrl + 'Product/Price/' + MerchantId
         u = POST_signatureBuilder(public_key,secret_key,url4)
         variantsku = sku
@@ -169,7 +169,13 @@ def get():
         response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/json'}, data=f )
         return response.json()
     
-    return GetPrice()
+    g = GetPrice()
+    mrp_posted = (g['CurrentPrice'][0]['mrp'])
+    webprice_posted = (g['CurrentPrice'][0]['webprice'])
+    if mrp != mrp_posted and webprice != webprice_posted:
+        return "DCN is not active"
+    elif mrp == mrp_posted and webprice == webprice_posted:
+        return "DCN is active"
 
 
 @application.route('/', methods=['POST'])
