@@ -150,6 +150,7 @@ def get():
         return response.json()
 
     def LocationInfo():
+        p,l = Getpricelists()
         locationId = l
         url11 = EnvUrl + 'Location/Information/'+ MerchantId + '/'+str(locationId)
         u = GET_signatureBuilder(public_key,secret_key, url11)
