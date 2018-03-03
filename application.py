@@ -137,7 +137,7 @@ def get():
         f= json.dumps({"sku":variantsku, "locationrefcode": LocationInfo()})
         response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/json'}, data=f )
         return response.json()
-    return str(GetPrice())
+    return GetPrice()
     
 
 
