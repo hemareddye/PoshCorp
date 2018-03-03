@@ -15,9 +15,9 @@ application = Flask(__name__)
 @application.route('/', methods=['GET'])
 def get():
     
-    MerchantId = "f48fdd16-92db-4188-854d-1ecd9b62d066"
-    public_key = "K5DYSCRC"
-    secret_key = "WHPT74UEQUYRZ33GUSBI7MGU"
+    MerchantId = "bd5c1517-8d80-48d7-8e8e-365433ad124f"
+    public_key = "VFHRRIQQ"
+    secret_key = "QQ8ZDIEHHIX5WPYKGXIY5YSF"
     EnvUrl = "http://www.testln.martjack.com/devapi/"
     Staging = "http://www.stageln.martjack.com/devapi"
     ProdEnv = "http://www.martjack.com/devapi" 
@@ -27,10 +27,6 @@ def get():
     user = "sandieps"
     password = "Sandie0713"
     database = "PoshCorp"
-
-    mrp = random.randint(2000,5000)
-    webprice = random.randint(1000,4000)
-    tokenprice = random.randint(500,1000)
 
     def timestamp():
         t = time.time()
@@ -49,41 +45,16 @@ def get():
         client = oauthlib.oauth1.Client(client_key=public_key, client_secret=secret_key, signature_type=oauth1.SIGNATURE_TYPE_QUERY, signature_method=oauth1.SIGNATURE_HMAC, timestamp = timestamp())  
         uri, header, body = client.sign(url, http_method='POST')
         return uri
-    
-    def GetCategoryproducts():
-        url5 = EnvUrl + 'Category/' + MerchantId + '/NA'
-        u = GET_signatureBuilder(public_key,secret_key,url5)
-        response = requests.get(u, headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'})
-        categories = response.json()
-        categoryid = (categories['Categories'][0]['CategoryId'])
-        url6 = EnvUrl + 'Product/Category/' + MerchantId + '/'+categoryid
-        u = GET_signatureBuilder(public_key,secret_key,url6)
-        response = requests.get(u, headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'})
-        r = response.json()
-        if r['Message'] == "No Record Found":
-            categoryid = (categories['Categories'][1]['CategoryId'])
-            url6 = EnvUrl + 'Product/Category/' + MerchantId + '/'+categoryid
-            u = GET_signatureBuilder(public_key,secret_key,url6)
-            response = requests.get(u, headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'})
-            r2 = response.json()
-            return r2
-        elif r['Message'] == "No Record Found":
-            categoryid = (categories['Categories'][2]['CategoryId'])
-            url6 = EnvUrl + 'Product/Category/' + MerchantId + '/'+categoryids
-            u = GET_signatureBuilder(public_key,secret_key,url6)
-            response = requests.get(u, headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'})
-            r3 = response.json()
-            return r3
-        else:
-            return "yes"
             
     def Getpricelists():
         u = GET_signatureBuilder(public_key, secret_key, url)
         response = requests.get(u, headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'})
         Getpricelists = response.json()
-        PricelistRefcode = (Getpricelists["PriceListDetails"][3]["ReferenceCode"])
-        LocationId = (Getpricelists["PriceListDetails"][3]["LocationId"])
+        PricelistRefcode = (Getpricelists["PriceListDetails"][1]["ReferenceCode"])
+        LocationId = (Getpricelists["PriceListDetails"][1]["LocationId"])
         return PricelistRefcode, LocationId
+    
+    PricelistRefcode, LocationId = Getpricelists()
     
     def Products():
         url7 = EnvUrl + 'Product/' + MerchantId + '/Search'
@@ -91,57 +62,57 @@ def get():
         params  = {'Merchantid' : MerchantId}
         response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'}, data=params)
         a = response.json()
-        i = 0
-        productId = (a['ProductIds'][i+1])
+        i = random.randint(0,100)
+        productId = (a['ProductIds'][i])
         pricelistrefcode, locationId = Getpricelists()
         url8 = EnvUrl + 'Product/Information/' + MerchantId +'/' +productId +  '/' + str(locationId)
         u = GET_signatureBuilder(public_key,secret_key,url8)
         response2 = requests.get(u,headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'} )
         skufetch = response2.json()
         sku = skufetch['Product']['SKU']
-        return response2.json(), sku, productId
-        
-    def variantproducts():
-        r, sku,pid = Products()
-        if (r['Product']['IsParentProduct']) == True:
-            url9 = EnvUrl + 'Product/Varients/' + MerchantId +'/' + pid + '/ALL'
-            u = GET_signatureBuilder(public_key,secret_key,url9)
-            response3 = requests.get(u,headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'} )
-            variantskufetch = response3.json()
-            variantsku = variantskufetch['ProductVarient'][0]['SKU'] 
-            return variantsku
-        elif (r['Product']['IsParentProduct']) == False:
-            return sku
-    
-    sku = variantproducts()
+        r = response2.json()
+        r1 = r['Product']['IsParentProduct']
+        def variantproduct():
+            if r1 == True:
+                url9 = EnvUrl + 'Product/Varients/' + MerchantId +'/' + productId + '/ALL'
+                u = GET_signatureBuilder(public_key,secret_key,url9)
+                response3 = requests.get(u,headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'} )
+                variantskufetch = response3.json()
+                variantsku = variantskufetch['ProductVarient'][0]['SKU']
+                return variantsku
+            elif r1 == False:
+                return sku
+        return sku, variantproduct()
+      
+    sku,variantsku =  Products()
         
     def PricelistAPI():
-        p,l = Getpricelists()
-        url3 = EnvUrl + 'Pricelist/' + MerchantId +  '/' + p + "/upload"
+        
+        url3 = EnvUrl + 'Pricelist/' + MerchantId +  '/' + PricelistRefcode + "/upload"
         u = POST_signatureBuilder(public_key, secret_key, url3)
-        r, sku,pid = Products()
-        variantsku = variantproducts()
-        mrp = "4990"
-        webprice = "3990"
+        mrp = random.randint(3000,5000)
+        webprice = random.randint(2000,4000)
+        tokenprice = random.randint(500,1000)
+
         def payload():
-            if variantproducts() == sku:
+            if sku == variantsku :
                 payload = {"pricelistitems": {"pricelistitem": {"sku": sku,"variantsku":"" ,"qty": "1","mrp": mrp,"webprice": webprice,"tokenprice": tokenprice}}}
                 Indata= {'MerchantId' : MerchantId, 'InputFormat' : 'application/json', 'InputData' : payload }
                 d = urlencode(Indata)
                 return d
-            elif variantproducts() == variantsku:
+            elif sku != variantsku:
                 payload = {"pricelistitems": {"pricelistitem": {"sku": sku,"variantsku":variantsku ,"qty": "1","mrp": mrp,"webprice": webprice,"tokenprice": tokenprice}}}
                 Indata= {'MerchantId' : MerchantId, 'InputFormat' : 'application/json', 'InputData' : payload }
                 d = urlencode(Indata)
                 return d
         response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'}, data=payload())
         taskidfetch = response.json()
-        TaskId = taskidfetch['Taskid']
-        return TaskId
+        TaskId1 = taskidfetch['Taskid']
+        return TaskId1
         
-            
+    Taskid = PricelistAPI()   
+
     def PricelistTaskStatus():
-        Taskid = PricelistAPI()
         url10 = EnvUrl + 'Product/MSMQTaskDetails/'  + MerchantId +'/' + Taskid + '/Product'
         u = GET_signatureBuilder(public_key,secret_key,url10)
         response = requests.get(u,headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'} )
@@ -150,24 +121,23 @@ def get():
         return response.json()
 
     def LocationInfo():
-        p,l = Getpricelists()
-        locationId = l
-        url11 = EnvUrl + 'Location/Information/'+ MerchantId + '/'+str(locationId)
+        url11 = EnvUrl + 'Location/Information/'+ MerchantId + '/'+str(LocationId)
         u = GET_signatureBuilder(public_key,secret_key, url11)
         response = requests.get(u, headers = {'accept':'application/json', 'Content-Type':'application/json'})
         e = response.json()
         Locationrefcode = (e['Location']['LocationCode'])
         return Locationrefcode
 
+
     def GetPrice():
-        r  = PricelistTaskStatus()
-        time.sleep(60)
+        
+        time.sleep(1)
         url4 = EnvUrl + 'Product/Price/' + MerchantId
         u = POST_signatureBuilder(public_key,secret_key,url4)
-        variantsku = sku
         f= json.dumps({"sku":variantsku, "locationrefcode": LocationInfo()})
         response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/json'}, data=f )
         return response.json()
+    return GetPrice()
     
     g = GetPrice()
     mrp_posted = (g['CurrentPrice'][0]['mrp'])
