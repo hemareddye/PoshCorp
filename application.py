@@ -139,13 +139,6 @@ def get():
         return response.json()
     return GetPrice()
     
-    g = GetPrice()
-    mrp_posted = (g['CurrentPrice'][0]['mrp'])
-    webprice_posted = (g['CurrentPrice'][0]['webprice'])
-    if mrp != mrp_posted and webprice != webprice_posted:
-        return "DCN is not active"
-    elif mrp == mrp_posted and webprice == webprice_posted:
-        return "DCN is active"
 
 
 @application.route('/', methods=['POST'])
