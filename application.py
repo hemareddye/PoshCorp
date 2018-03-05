@@ -1,5 +1,6 @@
 #!flask/bin/python
 from flask import Flask
+from flask import jsonify
 from flaskrun import flaskrun
 import time
 from oauthlib import oauth1
@@ -138,8 +139,7 @@ def get():
         f= json.dumps({"sku":variantsku, "locationrefcode": LocationInfo()})
         response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/json'}, data=f )
         return response.json()
-    return GetPrice()
-    
+    return jsonify(GetPrice())
 
 
 @application.route('/', methods=['POST'])
