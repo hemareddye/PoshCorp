@@ -9,7 +9,6 @@ import oauthlib.oauth1
 import re
 import random
 import json
-import jsonify
 
 
 application = Flask(__name__)
@@ -139,7 +138,7 @@ def get():
         f= json.dumps({"sku":variantsku, "locationrefcode": LocationInfo()})
         response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/json'}, data=f )
         return response.json()
-    return str(GetPrice())
+    return GetPrice()
     
 
 
