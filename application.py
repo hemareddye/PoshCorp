@@ -11,6 +11,7 @@ import random
 import json
 import jsonify
 
+
 application = Flask(__name__)
 
 @application.route('/', methods=['GET'])
