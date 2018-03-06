@@ -139,7 +139,9 @@ def get():
         f= json.dumps({"sku":variantsku, "locationrefcode": LocationInfo()})
         response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/json'}, data=f )
         return response.json()
-    return jsonify(GetPrice())
+
+    return jsonify(GetPrice()['CurrentPrice'][0]['mrp'])
+
 
 
 @application.route('/', methods=['POST'])
