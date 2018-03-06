@@ -87,14 +87,15 @@ def get():
         return sku, variantproduct()
       
     sku,variantsku =  Products()
+
+    mrp = random.randint(3000,5000)
+    webprice = random.randint(2000,4000)
+    tokenprice = random.randint(500,1000)
         
     def PricelistAPI():
         
         url3 = EnvUrl + 'Pricelist/' + MerchantId +  '/' + PricelistRefcode + "/upload"
         u = POST_signatureBuilder(public_key, secret_key, url3)
-        mrp = random.randint(3000,5000)
-        webprice = random.randint(2000,4000)
-        tokenprice = random.randint(500,1000)
 
         def payload():
             if sku == variantsku :
@@ -140,8 +141,11 @@ def get():
         response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/json'}, data=f )
         return response.json()
 
-    return jsonify(GetPrice()['CurrentPrice'][0]['mrp'])
-
+    if GetPrice()['CurrentPrice'][0]['variantsku'] == variantsku:
+        if GetPrice()['CurrentPrice'][0]['mrp'] == mrp and GetPrice()['CurrentPrice'][0]['webprice'] == webprice :
+            return "DCN is active"
+        elif GetPrice()['CurrentPrice'][0]['mrp'] != mrp and GetPrice()['CurrentPrice'][0]['webprice'] != webprice :
+            return "DCN is not active"
 
 
 @application.route('/', methods=['POST'])
