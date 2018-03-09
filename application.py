@@ -10,6 +10,7 @@ import oauthlib.oauth1
 import re
 import random
 import json
+import pymysql
 
 
 application = Flask(__name__)
@@ -17,18 +18,27 @@ application = Flask(__name__)
 @application.route('/', methods=['GET'])
 def get():
     
-    MerchantId = "bd5c1517-8d80-48d7-8e8e-365433ad124f"
-    public_key = "VFHRRIQQ"
-    secret_key = "QQ8ZDIEHHIX5WPYKGXIY5YSF"
-    EnvUrl = "http://www.testln.martjack.com/devapi/"
-    Staging = "http://www.stageln.martjack.com/devapi"
-    ProdEnv = "http://www.martjack.com/devapi" 
+    def EnvDecider():
+        db = pymysql.connect(host="poshlette.cnauabwc9dbm.us-east-1.rds.amazonaws.com", user="sandieps", passwd="Sandie0713", database = "PoshCorp")
+        cursr = db.cursor()
+        Env = "Staging"
+        cursr.execute("select * from PoshCorp.envurls where Env = %s " , Env )
+        a = cursr.fetchall()
+        for a in a:
+            return a[2]
     
-    host = "poshlette.cnauabwc9dbm.us-east-1.rds.amazonaws.com"
-    port = "3306"
-    user = "sandieps"
-    password = "Sandie0713"
-    database = "PoshCorp"
+    def MerchantDecider():
+        db = pymysql.connect(host="poshlette.cnauabwc9dbm.us-east-1.rds.amazonaws.com", user="sandieps", passwd="Sandie0713", database = "PoshCorp")
+        cursr = db.cursor()
+        merchant = 'FabIndia'
+        cursr.execute("Select * from PoshCorp.Combo where  merchant = %s" , merchant )
+        f = cursr.fetchall()
+        for f in f:
+            return f[2], f[3], f[4]
+    
+    MerchantId, public_key, secret_key = MerchantDecider()
+
+    EnvUrl = EnvDecider()
 
     def timestamp():
         t = time.time()
