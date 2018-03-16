@@ -21,7 +21,7 @@ def get():
     def EnvDecider():
         db = pymysql.connect(host="poshlette.cnauabwc9dbm.us-east-1.rds.amazonaws.com", user="sandieps", passwd="Sandie0713", database = "PoshCorp")
         cursr = db.cursor()
-        Env = "Staging"
+        Env = "Test"
         cursr.execute("select * from PoshCorp.envurls where Env = %s " , Env )
         a = cursr.fetchall()
         for a in a:
