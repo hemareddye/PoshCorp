@@ -15,13 +15,17 @@ import pymysql
 
 application = Flask(__name__)
 
-@application.route('/', methods=['GET'])
+@application.route('/', methods=['GET', 'POST'])
 def get():
+    
+    MnE = json.loads(request.data)
+    Env = MnE['Environment']
+    merchant = MnE['Merchant']
     
     def EnvDecider():
         db = pymysql.connect(host="poshlette.cnauabwc9dbm.us-east-1.rds.amazonaws.com", user="sandieps", passwd="Sandie0713", database = "PoshCorp")
         cursr = db.cursor()
-        Env = "Test"
+        #Env = "Test"
         cursr.execute("select * from PoshCorp.envurls where Env = %s " , Env )
         a = cursr.fetchall()
         for a in a:
@@ -30,7 +34,7 @@ def get():
     def MerchantDecider():
         db = pymysql.connect(host="poshlette.cnauabwc9dbm.us-east-1.rds.amazonaws.com", user="sandieps", passwd="Sandie0713", database = "PoshCorp")
         cursr = db.cursor()
-        merchant = 'FabIndia'
+        #merchant = 'FabIndia'
         cursr.execute("Select * from PoshCorp.Combo where  merchant = %s" , merchant )
         f = cursr.fetchall()
         for f in f:
