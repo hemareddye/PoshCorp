@@ -1,5 +1,6 @@
 #!flask/bin/python
 from flask import Flask
+from flask import request
 from flask import jsonify
 from flaskrun import flaskrun
 import time
@@ -161,10 +162,6 @@ def get():
         elif GetPrice()['CurrentPrice'][0]['mrp'] != mrp and GetPrice()['CurrentPrice'][0]['webprice'] != webprice :
             return "DCN is not active"
 
-
-@application.route('/', methods=['POST'])
-def post():
-    return '{"Output":"Hello World"}'
 
 
 if __name__ == '__main__':
