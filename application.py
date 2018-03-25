@@ -103,9 +103,9 @@ def get():
       
     sku,variantsku =  Products()
 
-    mrp = random.randint(3000,5000)
-    webprice = random.randint(2000,4000)
-    tokenprice = random.randint(500,1000)
+    mrp = random.randint(4000,5000)
+    webprice = random.randint(3000,4000)
+    tokenprice = random.randint(1000,2000)
         
     def PricelistAPI():
         
@@ -158,9 +158,9 @@ def get():
 
     if GetPrice()['CurrentPrice'][0]['variantsku'] == variantsku:
         if GetPrice()['CurrentPrice'][0]['mrp'] == mrp and GetPrice()['CurrentPrice'][0]['webprice'] == webprice :
-            return jsonify( "Run Message: DCN is active" , "Task id generated: " +  str(PricelistAPI()),"Task status:" + str(PricelistTaskStatus()),"Posted for price list associated with location ref code:"  +  str(LocationInfo()),"Posted for SKU: "  + str(sku),"Posted for variant sku: "  +  str(variantsku), "Posted MRP:"  + str(mrp), "Posted Web price:"  +   str(webprice), "Got MRP: "+   str(GetPrice()['CurrentPrice'][0]['mrp']), "Got Webprice: "  +   str(GetPrice()['CurrentPrice'][0]['webprice']))
+            return jsonify( "Run Message: DCN is active" , "Task id generated: " +  str(PricelistAPI()),"Task status:" +  str(PricelistTaskStatus()),"location ref code:"  +   str(LocationInfo()),"Posted for SKU: "  +  str(sku),"Posted for variant sku: "  +   str(variantsku), "Posted MRP:"  +   str(mrp), "Posted Web price:"  +   str(webprice), "Got MRP: "+   str(GetPrice()['CurrentPrice'][0]['mrp']), "Got Webprice: "  +   str(GetPrice()['CurrentPrice'][0]['webprice']))
         elif GetPrice()['CurrentPrice'][0]['mrp'] != mrp and GetPrice()['CurrentPrice'][0]['webprice'] != webprice :
-            return jsonify("Run Message: DCN is not active" , "Task id generated: " +  str(PricelistAPI()),"Task status:" + str(PricelistTaskStatus()),"Posted for price list associated with location ref code:"  +  str(LocationInfo()),"Posted for SKU: "  + str(sku),"Posted for variant sku: "  +  str(variantsku), "Posted MRP:"  + str(mrp), "Posted Web price:"  +   str(webprice), "Got MRP: "+   str(GetPrice()['CurrentPrice'][0]['mrp']), "Got Webprice: "  +   str(GetPrice()['CurrentPrice'][0]['webprice']))
+            return jsonify("Run Message: DCN is not active" , "Task id generated: " +  str(PricelistAPI()),"Task status:" + str(PricelistTaskStatus()),"location ref code:"  +   str(LocationInfo()),"Posted for SKU: "  +  str(sku),"Posted for variant sku: "  +  str(variantsku), "Posted MRP:"  + str(mrp), "Posted Web price:"  +   str(webprice), "Got MRP: "+   str(GetPrice()['CurrentPrice'][0]['mrp']), "Got Webprice: "  +   str(GetPrice()['CurrentPrice'][0]['webprice']))
 
 
 if __name__ == '__main__':
