@@ -158,9 +158,9 @@ def get():
 
     if GetPrice()['CurrentPrice'][0]['variantsku'] == variantsku:
         if GetPrice()['CurrentPrice'][0]['mrp'] == mrp and GetPrice()['CurrentPrice'][0]['webprice'] == webprice :
-            return jsonify("DCN is active")
+            return jsonify("DCN is active" , mrp,webprice, GetPrice()['CurrentPrice'][0]['mrp'],GetPrice()['CurrentPrice'][0]['webprice'], LocationInfo(), PricelistTaskStatus(), PricelistAPI(), sku, variantsku)
         elif GetPrice()['CurrentPrice'][0]['mrp'] != mrp and GetPrice()['CurrentPrice'][0]['webprice'] != webprice :
-            return jsonify("DCN is not active")
+            return jsonify("DCN is not active" , mrp,webprice, GetPrice()['CurrentPrice'][0]['mrp'],GetPrice()['CurrentPrice'][0]['webprice'], LocationInfo(), PricelistTaskStatus(), PricelistAPI(), sku, variantsku)
 
 
 if __name__ == '__main__':
