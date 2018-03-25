@@ -158,10 +158,9 @@ def get():
 
     if GetPrice()['CurrentPrice'][0]['variantsku'] == variantsku:
         if GetPrice()['CurrentPrice'][0]['mrp'] == mrp and GetPrice()['CurrentPrice'][0]['webprice'] == webprice :
-            return "DCN is active"
+            return jsonify("DCN is active")
         elif GetPrice()['CurrentPrice'][0]['mrp'] != mrp and GetPrice()['CurrentPrice'][0]['webprice'] != webprice :
-            return "DCN is not active"
-
+            return jsonify("DCN is not active")
 
 
 if __name__ == '__main__':
