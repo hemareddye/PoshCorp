@@ -164,11 +164,7 @@ def get():
 
 @application.route('/Pricelistretry', methods=['GET'])
 def Pricelistretry():
-    url4 = get().EnvUrl + 'Product/Price/' + get().MerchantId
-    u = get().POST_signatureBuilder(public_key,secret_key,url4)
-    f= json.dumps({"sku":get().variantsku, "locationrefcode": get().LocationInfo()})
-    response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/json'}, data=f )
-    return response.json()
+    return jsonify(get().sku, get().variantsku)
     
 
 if __name__ == '__main__':
