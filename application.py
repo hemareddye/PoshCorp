@@ -162,6 +162,16 @@ def get():
         elif GetPrice()['CurrentPrice'][0]['mrp'] != mrp and GetPrice()['CurrentPrice'][0]['webprice'] != webprice :
             return jsonify("Run Message: DCN is not active" , "Task id generated: " +  str(PricelistAPI()),"Task status:" + str(PricelistTaskStatus()),"location ref code:"  +   str(LocationInfo()),"Posted for SKU: "  +  str(sku),"Posted for variant sku: "  +  str(variantsku), "Posted MRP:"  + str(mrp), "Posted Web price:"  +   str(webprice), "Got MRP: "+   str(GetPrice()['CurrentPrice'][0]['mrp']), "Got Webprice: "  +   str(GetPrice()['CurrentPrice'][0]['webprice']))
 
+@application.route('/Pricelistretry', methods=['GET'])
+def Pricelistretry():
+    url4 = EnvUrl + 'Product/Price/' + MerchantId
+    u = POST_signatureBuilder(public_key,secret_key,url4)
+    f= json.dumps({"sku":variantsku, "locationrefcode": LocationInfo()})
+    response = requests.post(u, headers = {'accept':'application/json', 'Content-Type':'application/json'}, data=f )
+    return response.json()
+    
+    
+
 
 if __name__ == '__main__':
     flaskrun(application)
