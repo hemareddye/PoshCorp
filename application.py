@@ -171,7 +171,15 @@ def get():
 
 @application.route('/Pricelistretry', methods=['GET'])
 def Pricelistretry():
-    return "wait"
+    def RetrieveTask():
+        db = pymysql.connect(host="poshlette.cnauabwc9dbm.us-east-1.rds.amazonaws.com", user="sandieps", passwd="Sandie0713", database = "PoshCorp")
+        cursr = db.cursor()
+        cursr.execute("""select * from runs order by id desc limit 1""")
+        xa = cursr.fetchall()
+        for xa in xa:
+            return xa[1]
+        
+    
     
 
 if __name__ == '__main__':
