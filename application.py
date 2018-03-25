@@ -158,7 +158,6 @@ def get():
 
     if GetPrice()['CurrentPrice'][0]['variantsku'] == variantsku:
         if GetPrice()['CurrentPrice'][0]['mrp'] == mrp and GetPrice()['CurrentPrice'][0]['webprice'] == webprice :
-            import pymysql
             db = pymysql.connect(host="poshlette.cnauabwc9dbm.us-east-1.rds.amazonaws.com", user="sandieps", passwd="Sandie0713", database = "PoshCorp")
             cursr = db.cursor()
             cursr.execute("""insert into runs(taskid) values (%s)""", Taskid)
