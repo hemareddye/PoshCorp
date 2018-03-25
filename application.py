@@ -164,7 +164,6 @@ def get():
 
 @application.route('/Pricelistretry', methods=['GET'])
 def Pricelistretry():
-    get().EnvUrl
     url4 = get().EnvUrl + 'Product/Price/' + get().MerchantId
     u = get().POST_signatureBuilder(public_key,secret_key,url4)
     f= json.dumps({"sku":get().variantsku, "locationrefcode": get().LocationInfo()})
