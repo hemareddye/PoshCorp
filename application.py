@@ -164,7 +164,7 @@ def get():
 
 @application.route('/Pricelistretry', methods=['GET'])
 def Pricelistretry():
-    return jsonify(get().sku, get().variantsku)
+    return get().sku
     
 
 if __name__ == '__main__':
