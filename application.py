@@ -136,7 +136,7 @@ def get():
         response = requests.get(u,headers = {'accept':'application/json', 'Content-Type':'application/x-www-form-urlencoded'} )
         r  = response.json()
         TaskStatus = r['TaskMsmqDetails']['TaskStatus']
-        return response.json()
+        return TaskStatus
 
     def LocationInfo():
         url11 = EnvUrl + 'Location/Information/'+ MerchantId + '/'+str(LocationId)
@@ -158,9 +158,9 @@ def get():
 
     if GetPrice()['CurrentPrice'][0]['variantsku'] == variantsku:
         if GetPrice()['CurrentPrice'][0]['mrp'] == mrp and GetPrice()['CurrentPrice'][0]['webprice'] == webprice :
-            return jsonify("DCN is active" , mrp,webprice, GetPrice()['CurrentPrice'][0]['mrp'],GetPrice()['CurrentPrice'][0]['webprice'], LocationInfo(), PricelistTaskStatus(), PricelistAPI(), sku, variantsku)
+            return jsonify( "Run Message" : "DCN is active" , "Task id generated ":PricelistAPI(),"Task status":PricelistTaskStatus(),"Posted for price list associated with location ref code" : LocationInfo(),"Posted for SKU" : sku,"Posted for variant sku" : variantsku, "Posted MRP": mrp, "Posted Web price": webprice, "Got MRP":GetPrice()['CurrentPrice'][0]['mrp'], "Got Webprice":GetPrice()['CurrentPrice'][0]['webprice'])
         elif GetPrice()['CurrentPrice'][0]['mrp'] != mrp and GetPrice()['CurrentPrice'][0]['webprice'] != webprice :
-            return jsonify("DCN is not active" , mrp,webprice, GetPrice()['CurrentPrice'][0]['mrp'],GetPrice()['CurrentPrice'][0]['webprice'], LocationInfo(), PricelistTaskStatus(), PricelistAPI(), sku, variantsku)
+            return jsonify("Run Message" : "DCN is not active" , "Task id generated ":PricelistAPI(),"Task status":PricelistTaskStatus(),"Posted for price list associated with location ref code" : LocationInfo(),"Posted for SKU" : sku,"Posted for variant sku" : variantsku, "Posted MRP": mrp, "Posted Web price": webprice, "Got MRP":GetPrice()['CurrentPrice'][0]['mrp'], "Got Webprice":GetPrice()['CurrentPrice'][0]['webprice'])
 
 
 if __name__ == '__main__':
